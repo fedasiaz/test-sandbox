@@ -1,13 +1,13 @@
-const assert = require('node:assert');
-const fetch = require('node-fetch');
-
-(async () => {
-  try {
-    const res = await fetch('https://example.com');
-    assert.strictEqual(res.status, 200, 'Expected status 200');
-    console.log('Test passed!');
-  } catch (e) {
-    console.error('Test failed:', e.message);
-    process.exit(1);
+async function run() {
+  const fetch = (await import('node-fetch')).default;
+  const response = await fetch('https://api.github.com');
+  if (!response.ok) {
+    throw new Error('Test failed: network request failed');
   }
-})();
+  console.log('Test passed');
+}
+
+run().catch(err => {
+  console.error(err);
+  process.exit(1);
+});
